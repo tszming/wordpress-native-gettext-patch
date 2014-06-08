@@ -209,15 +209,14 @@
       putenv ('LC_ALL=' . $locale);
       setlocale (LC_ALL, $locale);
       
-      // Retrive MD5-hash of the file
-      # DIRTY! But there is no other way at the moment to make this work
-      if (!($Domain = md5_file ($filename)))
+      // Retrive md5 hash of the file's modification time
+      if (!($Domain = md5(filemtime($filename))))
         return false;
       
       // Make sure that the language-directory exists
       $Path = './wp-lang/' . $locale . '/LC_MESSAGES';
       
-      if (!wp_mkdir_p ($Path))
+      if (!file_exists($Path) && !wp_mkdir_p ($Path))
         return false;
       
       // Make sure that the MO-File is existant at the destination
